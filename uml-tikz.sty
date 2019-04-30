@@ -15,6 +15,8 @@
 \newcommand{\umlClassWidth}{\linewidth}
 \newtcolorbox{class}[1]{colback=yellow!10!white,colframe=yellow!50!black,title=#1,center title, width=\umlClassWidth}
 
+%--Init variables
+
 \newlength{\umlPositionX}
 \setlength{\umlPositionX}{0cm}
 \newlength{\umlPositionY}
@@ -24,7 +26,11 @@
 \newlength{\umlVSpacing}
 \setlength{\umlVSpacing}{2cm}
 
+\newlength{\umlArrowLength}
+\setlength{\umlArrowLength}{3mm}
+\newcommand{\umlArrowStyle}{}
 
+%--The command to create a new class
 \newcommand{\umlClass}[3]{
 %	
 	\edef\temp{%
@@ -50,6 +56,8 @@
 
 	\tmp	
 }
+
+%--Commands for positioning of the classes
 
 \newcommand{\umlRight}[2][1]{
 	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname + \csname umlBoxWidth#2\endcsname*#1 + \umlHSpacing*#1}
@@ -83,9 +91,7 @@
 	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname - \csname umlBoxWidth#3\endcsname*#1 - \umlHSpacing*#1}
 	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname + \csname umlBoxHeight#3\endcsname*#2/2 + \umlVSpacing*#2}}
 
-\newlength{\umlArrowLength}
-\setlength{\umlArrowLength}{3mm}
-\newcommand{\umlArrowStyle}{}
+%--switch to seperate between different arrow styles
 
 \newcommand{\umlInitArrowStyle}[1]{
 	\ifstrequal{#1}{->}{%
@@ -135,6 +141,7 @@
 	}
 }
 
+%--comands to create different assoziations
 
 \newcommand{\umlOneOne}[3][]{\umlInitArrowStyle{#1}
 	\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) {1} node [very near end, above] (TextNode) {1};}
