@@ -12,10 +12,11 @@
 
 \newcommand{\tcbheight}{\the\dimexpr\tcb@raster@box@height-\kvtcb@raster@skip@before-\kvtcb@raster@skip@after}
 
-\newcommand{\umlClassWidth}{\linewidth}
 \newtcolorbox{class}[1]{colback=yellow!10!white,colframe=yellow!50!black,title=#1,center title, width=\umlClassWidth}
 
 %--Init variables
+
+\newcommand{\umlClassWidth}{\linewidth}
 
 \newlength{\umlPositionX}
 \setlength{\umlPositionX}{0cm}
@@ -27,7 +28,7 @@
 \setlength{\umlVSpacing}{2cm}
 
 \newlength{\umlArrowLength}
-\setlength{\umlArrowLength}{3mm}
+\setlength{\umlArrowLength}{4mm}
 \newcommand{\umlArrowStyle}{}
 
 %--The command to create a new class
@@ -59,35 +60,35 @@
 
 %--Commands for positioning of the classes
 
-\newcommand{\umlRight}[2][1]{
+\newcommand{\umlRightOf}[2][1]{
 	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname + \csname umlBoxWidth#2\endcsname*#1 + \umlHSpacing*#1}
 	\setlength{\umlPositionY}{\csname umlPositionY#2\endcsname}}
 %
-\newcommand{\umlLeft}[2][1]{
+\newcommand{\umlLeftOf}[2][1]{
 	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname - \csname umlBoxWidth#2\endcsname*#1 - \umlHSpacing*#1}
 	\setlength{\umlPositionY}{\csname umlPositionY#2\endcsname}}
 %
-\newcommand{\umlDown}[2][1]{
+\newcommand{\umlDownOf}[2][1]{
 	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname}
 	\setlength{\umlPositionY}{\csname umlPositionY#2\endcsname - \csname umlBoxHeight#2\endcsname*#1/2 - \umlVSpacing*#1}}
 %
-\newcommand{\umlUp}[2][1]{
+\newcommand{\umlUpOf}[2][1]{
 	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname}
 	\setlength{\umlPositionY}{\csname umlPositionY#2\endcsname + \csname umlBoxHeight#2\endcsname*#1/2 + \umlVSpacing*#1}}
 
-\NewDocumentCommand{\umlRightDown}{ O{1} O{1} m }{
+\NewDocumentCommand{\umlRightDownOf}{ O{1} O{1} m }{
 	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname + \csname umlBoxWidth#3\endcsname*#1 + \umlHSpacing*#1}
 	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname - \csname umlBoxHeight#3\endcsname*#2/2 - \umlVSpacing*#2}}
 
-\NewDocumentCommand{\umlRightUp}{ O{1} O{1} m }{
+\NewDocumentCommand{\umlRightUpOf}{ O{1} O{1} m }{
 	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname + \csname umlBoxWidth#3\endcsname*#1 + \umlHSpacing*#1}
 	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname + \csname umlBoxHeight#3\endcsname*#2/2 + \umlVSpacing*#2}}
 
-\NewDocumentCommand{\umlLeftDown}{ O{1} O{1} m }{
+\NewDocumentCommand{\umlLeftDownOf}{ O{1} O{1} m }{
 	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname - \csname umlBoxWidth#3\endcsname*#1 - \umlHSpacing*#1}
 	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname - \csname umlBoxHeight#3\endcsname*#2/2 - \umlVSpacing*#2}}
 
-\NewDocumentCommand{\umlLeftUp}{ O{1} O{1} m }{
+\NewDocumentCommand{\umlLeftUpOf}{ O{1} O{1} m }{
 	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname - \csname umlBoxWidth#3\endcsname*#1 - \umlHSpacing*#1}
 	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname + \csname umlBoxHeight#3\endcsname*#2/2 + \umlVSpacing*#2}}
 
@@ -95,13 +96,13 @@
 
 \newcommand{\umlInitArrowStyle}[1]{
 	\ifstrequal{#1}{->}{%
-		\renewcommand{\umlArrowStyle}{-{Latex[length = \the\umlArrowLength]}}
+		\renewcommand{\umlArrowStyle}{-{Straight Barb[length = 0.5*\the\umlArrowLength]}}
 	}{
 		\ifstrequal{#1}{<-}{%
-			\renewcommand{\umlArrowStyle}{{Latex[length = \the\umlArrowLength]}-}
+			\renewcommand{\umlArrowStyle}{{Straight Barb[length = 0.5*\the\umlArrowLength]}-}
 		}{
 			\ifstrequal{#1}{<->}{%
-				\renewcommand{\umlArrowStyle}{{Latex[length = \the\umlArrowLength]}-{Latex[length = \the\umlArrowLength]}}
+				\renewcommand{\umlArrowStyle}{{Straight Barb[length = 0.5*\the\umlArrowLength]}-{Straight Barb[length = 0.5*\the\umlArrowLength]}}
 			}{
 				\ifstrequal{#1}{- >}{%
 					\renewcommand{\umlArrowStyle}{-{Latex[length = \the\umlArrowLength, open]}}
@@ -110,22 +111,22 @@
 						\renewcommand{\umlArrowStyle}{{Latex[length = \the\umlArrowLength, open]}-}
 					}{
 						\ifstrequal{#1}{x->}{%
-							\renewcommand{\umlArrowStyle}{{Rays[length = \the\umlArrowLength]}-{Latex[length = \the\umlArrowLength]}}
+							\renewcommand{\umlArrowStyle}{{Rays[length = \the\umlArrowLength]}-{Straight Barb[length = 0.5*\the\umlArrowLength]}}
 						}{
 							\ifstrequal{#1}{<-x}{%
-								\renewcommand{\umlArrowStyle}{{Classic[length = \the\umlArrowLength]}-{Rays[length = \the\umlArrowLength]}}
+								\renewcommand{\umlArrowStyle}{{Straight Barb[length = 0.5*\the\umlArrowLength]}-{Rays[length = \the\umlArrowLength]}}
 							}{
 								\ifstrequal{#1}{-< >}{%
-									\renewcommand{\umlArrowStyle}{-{Diamond[length = \the\umlArrowLength+2mm, open]}}
+									\renewcommand{\umlArrowStyle}{-{Diamond[length = \the\umlArrowLength, open]}}
 								}{
 									\ifstrequal{#1}{< >-}{%
-										\renewcommand{\umlArrowStyle}{{Diamond[length = \the\umlArrowLength+2mm, open]}-}
+										\renewcommand{\umlArrowStyle}{{Diamond[length = \the\umlArrowLength, open]}-}
 									}{
 										\ifstrequal{#1}{-<>}{
-											\renewcommand{\umlArrowStyle}{-{Diamond[length = \the\umlArrowLength+2mm]}}
+											\renewcommand{\umlArrowStyle}{-{Diamond[length = \the\umlArrowLength]}}
 										}{
 											\ifstrequal{#1}{<>-}{
-												\renewcommand{\umlArrowStyle}{{Diamond[length = \the\umlArrowLength+2mm]}-}
+												\renewcommand{\umlArrowStyle}{{Diamond[length = \the\umlArrowLength]}-}
 											}{
 												\renewcommand{\umlArrowStyle}{}
 											}
@@ -156,7 +157,7 @@
 	\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) {#4} node [very near end, above] (TextNode) {#5};}
 
 \newcommand{\umlSelf}[4][]{\umlInitArrowStyle{#1}
-	\draw[\umlArrowStyle] (#2.east) -- ++ (0.5, 0) node [near start, above] (TextNode) {#3} -- ++ (0,-\csname umlBoxHeight#1\endcsname/2 - 0.5cm) -- ++ (- \csname umlBoxWidth#1\endcsname/2 - 0.5cm, 0) -- (#2.south) node [near end, right] (TextNode) {#4};}
+	\draw[\umlArrowStyle] (#2.east) -- ++ (0.5, 0) node [near start, above] (TextNode) {#3} -- ++ (0,-\csname umlBoxHeight#2\endcsname/2 - 0.5cm) -- ++ (- \csname umlBoxWidth#2\endcsname/2 - 0.5cm, 0) -- (#2.south) node [near end, right] (TextNode) {#4};}
 
 \newcommand{\umlNon}[3][]{\umlInitArrowStyle{#1}
 	\draw[\umlArrowStyle] (#2) -- (#3);}

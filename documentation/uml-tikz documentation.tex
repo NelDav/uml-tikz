@@ -1,0 +1,307 @@
+\documentclass[parskip=full]{scrartcl}
+
+%\usepackage{showframe}
+\usepackage{hyperref}
+\usepackage[skins]{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{standalone}
+\usepackage{uml-tikz}
+
+\usetikzlibrary{fit, shapes.geometric}
+
+\title{uml-tikz Documentation}
+\author{David Nelles}
+
+\newcommand{\warningSign}{
+	\begin{tikzpicture}[scale=.3]
+		\fill[white] (0,0) -- (2,0) -- (1,1.73) -- (0,0);
+		\draw[red, line width=.8mm, line cap=round] (0,0) -- (2,0);
+		\draw[red, line width=.8mm, line cap=round] (2,0) -- (1,1.73);
+		\draw[red, line width=.8mm, line cap=round] (0,0) -- (1,1.73);
+		\node (text) at (1,.65) {\textcolor{black}{!}};
+	\end{tikzpicture}
+}
+
+\newcommand{\attentionSign}{
+	\begin{tikzpicture}[scale=.3]
+		\node[draw=yellow!90!red,fill=white,minimum size=0.865,regular polygon,regular polygon sides=8, line width=.8mm] (a) {};
+		\node (text) at (0,0) {\textcolor{black}{!}};
+	\end{tikzpicture}
+}
+
+\newcommand{\infoSign}{
+	\begin{tikzpicture}[scale=.3]
+	\fill[blue!60!white] (0,0) circle (0.865);
+	\draw[blue!60!white, line width=.8mm] (0,0) circle (0.865);
+	\node (text) at (0,0) {\textcolor{white}{i}};
+	\end{tikzpicture}
+}
+
+\newtcolorbox{pathBox}{colback=green!10!white,colframe=green!50!black,title=Path:}
+
+\newtcolorbox{warning}{colback=red!10!white,colframe=red!50!black,title=Warning:, after title=\hfill\warningSign}
+
+\newtcolorbox{attention}{colback=yellow!10!white,colframe=yellow!40!orange!90!black,title=Attention:, after title=\hfill\attentionSign}
+
+\newtcolorbox{info}{colback=blue!10!white,colframe=blue!50!black,title=Info:, after title=\hfill\infoSign}
+
+\newtcbox{\command}{enhanced,nobeforeafter,tcbox raise base,boxrule=0.4pt,top=0mm,bottom=0mm,
+	right=0mm,left=4mm,arc=1pt,boxsep=2pt,before upper={\vphantom{dlg}},
+	colframe=orange!50!black,colback=orange!10!white,
+	overlay={\begin{tcbclipinterior}\fill[orange!75!blue!50!white] (frame.south west)
+			rectangle node[text=white,font=\sffamily\bfseries\tiny,rotate=90] {cmd} ([xshift=4mm]frame.north west);\end{tcbclipinterior}}}
+		
+%\robustify{\command}
+
+\lstset{
+	language=TeX,
+	breaklines=true,
+	basicstyle=\ttfamily,
+	keywordstyle=\lst@ifdisplaystyle\color{\color{red!60!black}}\fi,
+	postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+	commentstyle=\color{gray}
+}
+
+\lstset{emph={%  
+		\usepackage, \umlClass, \begin, \end%
+	},emphstyle={\color{red!60!black}\bfseries}%
+}%
+
+\newcommand\addvmargin[1]{
+	\node[fit=(current bounding box),inner ysep=#1,inner xsep=0]{};
+}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\newpage
+	\section{Install uml-tikz}
+		\subsection{MikTex}
+		Download the newest version from \href{https://github.com/NelDav/uml-tikz}{https://github.com/NelDav/uml-tikz}. After that coppy the tikz-uml folder into a location witch looks like that:
+		\begin{pathBox}
+			\$any~location~you~want\$/localtexmf/tex/latex
+		\end{pathBox}
+		Now open MikTex an click on "Tasks$\rightarrow$Refresh file name database".
+%		
+	\section{Include the package}
+		To include the package you only have to type \command{\textbackslash usepackage\{uml-tikz\}}
+%		
+	\section{Classes}
+	
+	\subsection{Create a class}
+		There is the \command{\textbackslash umlClass\{Name\}\{Attributes\}\{Functions\}} command to create a new uml class.
+		
+	\begin{tabular}{p{.44\textwidth}|p{.44\textwidth}}
+		\renewcommand{\umlClassWidth}{.9\linewidth}
+
+		\begin{lstlisting}[language=TeX]
+\begin{tikzpicture}
+  \umlClass{MyClass}
+    {
+      -attribute1: int\\
+      -attribute2: string
+    }
+    {
+      +function1()\\
+      +function2()
+    }
+\end{tikzpicture}
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=80]
+		\umlClass{MyClass}
+		{
+			-attribute1: int\\
+			-attribute2: string
+		}
+		{
+			+function1()\\
+			+function2()
+		}
+		\end{tikzpicture}
+	\end{tabular}
+
+	\subsection{Change the width of classes}
+	The width of the box which represents the class is defined by \command{\textbackslash umlClassWidth}. To change the width use \command{\textbackslash renewcommand\{\textbackslash umlClassWidth\}\{\texttt{Value}\}} before you create the class.
+	
+	\subsection{Class width}
+	Every class has it's own width. The width is saved in \command{\textbackslash umlBoxWidth\texttt{ClassName}}. For example to get the width of the class named \texttt{MyClass} type: \command{\textbackslash umlBoxWidthMyClass}.\vspace{\baselineskip}
+	
+	\begin{attention}
+		Changing the \command{\textbackslash umlBoxWidth\texttt{ClassName}} value will not change the class in any way.
+	\end{attention}
+
+	\subsection{Class height}
+	Every class has it's own height. The height is saved in \command{\textbackslash umlBoxHeight\texttt{ClassName}}. For example to get the height of the class named \texttt{MyClass} type: \command{\textbackslash umlBoxHeightMyClass}.\vspace{\baselineskip}
+	
+	\begin{attention}
+		Changing the \command{\textbackslash umlBoxHeight\texttt{ClassName}} value will not change the class in any way.
+	\end{attention}
+
+	\section{Positioning}
+	The position of new classes is relativ to the position of any existing class. The commands \command{\textbackslash umlRightOf}, \command{\textbackslash umlLeftOf}, \command{\textbackslash umlDownOf}, \command{\textbackslash umlUpOf}, \command{\textbackslash umlRightDownOf}, \command{\textbackslash umlRightUpOf}, \command{\textbackslash umlLeftDownOf} and \command{\textbackslash umlLeftUpOf} can be used to set the position of a new class. The name of the class which position should be the reference is needed for every position command. It have to be stated in braces behind the command. The first class is printed at tikz-position (0,0).
+		
+	\subsection{Space between classes}
+	The space between several classes is defined by the spacing there are different spacings for the horizontal and vertical space between the classes. The horizontal space is defined by \command{\textbackslash umlHSpacing}. The vertical space is defined by \command{\textbackslash umlVSpacing}.
+	
+	To change the spacing values use the \command{\textbackslash setLength\{\texttt{lengthCommand}\}\{\texttt{new length}\}} command.
+	
+	For example to change the horizontal spacing to 4cm type:\\\command{\textbackslash setLength\{\textbackslash umlHSpacing\}\{4cm\}}
+	\begin{info}
+		Changing the values of \command{\textbackslash umlHSpacing} and \command{\textbackslash umlVSpacing} only effects the position commands which are used after.
+	\end{info}
+
+	\subsection{Single spacing}
+	To controll the spacing between two specific classes, every position command is extendable by a factor, which is multiplied to the spacing.
+	
+	For example, if the space between two classes should be double as normal and the new class should be printed below the other one type: \command{\textbackslash umlDownOf$\left[2\right]$\{FirstClass\}}
+	
+	Position commands, which effects the position in horizontal and vertical direction, can be extended by two optional spacing factors. The first one effects the horizontal spacing, the seccond one effects the vertical spacing.
+	
+	\begin{attention}
+		It is not possible to use decimal numbers as position factor. If a number between 0 and 1 is needed, use a fracture. For example: \texttt{0.5} will not work. Type \texttt{1/2} instead.
+	\end{attention}
+
+	\section{Assoziations}
+	There are 6 different asoziantion commands:
+	
+	
+	\begin{tabular}{p{.44\textwidth}|p{.44\textwidth}}
+		\renewcommand{\umlClassWidth}{.9\linewidth}
+		
+		\begin{lstlisting}[language=TeX]
+\umlOneOne{NameOfClass1}{NameOfClass2}
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=20]
+			\umlOneOne{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+\umlOneN{NameOfClass1}{NameOfClass2}
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=20]
+			\umlOneN{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+\umlNN{NameOfClass1}{NameOfClass2}
+		\end{lstlisting}
+
+		&
+
+		\begin{tikzpicture}[baseline=20]
+			\umlNN{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+\umlNon{NameOfClass1}{NameOfClass2}
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=20]
+		\umlNon{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+\umlFree{NameOfClass1}{NameOfClass2}{multiplicity1}{multiplicity2}
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=20]
+		\umlFree{0,0}{5,0}{multiplicity1}{multiplicity2}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+\umlSelf{nameOfClass}{1}{*}
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=20]
+		\umlClass{class}{attribute}{functions}
+		\umlSelf{class}{1}{*}
+		\end{tikzpicture}
+	\end{tabular}
+	
+	It is possible to create different endings for every assoziation. Therefore the ending style has be defined as optional argument. 
+	
+	\command{\textbackslash umlNon[endingStyle]\{nameOfClass1\}\{nameOfClass2\}}
+	
+	\begin{tabular}{p{.44\textwidth}|p{.44\textwidth}}
+		\begin{lstlisting}[language=TeX]
+[->]
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=15]
+		\umlNon[->]{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+[<->]
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=15]
+			\umlNon[<->]{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+[- >]
+		\end{lstlisting}
+
+&
+
+		\begin{tikzpicture}[baseline=15]
+			\umlNon[- >]{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+[-<>]
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=15]
+			\umlNon[-<>]{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+[-< >]
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=15]
+			\umlNon[-< >]{0,0}{5,0}
+		\end{tikzpicture}\\
+		
+		\begin{lstlisting}[language=TeX]
+[x->]
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=15]
+			\umlNon[x->]{0,0}{5,0}
+		\end{tikzpicture}\\
+	\end{tabular}
+	
+	It is possible to invert the arrow direction by inverting ending style argument.
+	
+\end{document}
