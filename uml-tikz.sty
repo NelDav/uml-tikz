@@ -5,6 +5,7 @@
 \RequirePackage{tcolorbox}
 \RequirePackage{etoolbox}
 \RequirePackage{calc}
+\RequirePackage{xifthen}
 \RequirePackage{xparse}
 \tcbuselibrary{skins}
 
@@ -26,6 +27,19 @@
 \setlength{\umlHSpacing}{4cm}
 \newlength{\umlVSpacing}
 \setlength{\umlVSpacing}{2cm}
+
+\newlength{\umlAssoziationOneX}
+\setlength{\umlAssoziationOneX}{0cm}
+\newlength{\umlAssoziationOneY}
+\setlength{\umlAssoziationOneY}{0cm}
+\newlength{\umlAssoziationTwoX}
+\setlength{\umlAssoziationTwoX}{0cm}
+\newlength{\umlAssoziationTwoY}
+\setlength{\umlAssoziationTwoY}{0cm}
+\newlength{\umlAssoziationXDiff}
+\setlength{\umlAssoziationXDiff}{0cm}
+\newlength{\umlAssoziationYDiff}
+\setlength{\umlAssoziationYDiff}{0cm}
 
 \newlength{\umlArrowLength}
 \setlength{\umlArrowLength}{4mm}
@@ -144,19 +158,68 @@
 	}
 }
 
+
 %--comands to create different assoziations
 
-\newcommand{\umlOneOne}[3][]{\umlInitArrowStyle{#1}
-	\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {1} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {1};}
+\newcommand{\umlGetAssoziationDifferences}[2]{
+	\tikz@scan@one@point\pgfutil@firstofone(#1)\relax
+	\setlength{\umlAssoziationOneX}{\the\pgf@x};
+	\setlength{\umlAssoziationOneY}{\the\pgf@y};
+	
+	\tikz@scan@one@point\pgfutil@firstofone(#2)\relax
+	\setlength{\umlAssoziationTwoX}{\the\pgf@x};
+	\setlength{\umlAssoziationTwoY}{\the\pgf@y};
+	
+	\setlength{\umlAssoziationXDiff}{\the\umlAssoziationOneX-\the\umlAssoziationTwoX}
+	\setlength{\umlAssoziationYDiff}{\the\umlAssoziationOneY-\the\umlAssoziationTwoY}
+	
+	\ifthenelse{\lengthtest{\umlAssoziationXDiff<0pt}}{\setlength{\umlAssoziationXDiff}{\the\umlAssoziationTwoX-\the\umlAssoziationOneX}}{}
+	\ifthenelse{\lengthtest{\umlAssoziationYDiff<0pt}}{\setlength{\umlAssoziationYDiff}{\the\umlAssoziationTwoY-\the\umlAssoziationOneY}}{}
+}
 
-\newcommand{\umlOneN}[3][]{\umlInitArrowStyle{#1}
-	\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {1} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {*};}
+\newcommand{\umlOneOne}[3][]{%
+	\umlInitArrowStyle{#1}
+	\umlGetAssoziationDifferences{#2}{#3}
+%	
+	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
+		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {1} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {1};
+	}{
+		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {1} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {1};
+	}
+}
 
-\newcommand{\umlNN}[3][]{\umlInitArrowStyle{#1}
-	\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {*} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {*};}
+\newcommand{\umlOneN}[3][]{%
+	\umlInitArrowStyle{#1}
+	\umlGetAssoziationDifferences{#2}{#3}
+	%	
+	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
+		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {1} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {*};
+	}{
+		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {1} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {*};
+	}
+}
+
+\newcommand{\umlNN}[3][]{%
+	\umlInitArrowStyle{#1}
+	\umlGetAssoziationDifferences{#2}{#3}
+	%	
+	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
+		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {*} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {*};
+	}{
+		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {*} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {*};
+	}
+}
 
 \newcommand{\umlFree}[5][]{\umlInitArrowStyle{#1}
-	\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {#4} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {#5};}
+	\umlInitArrowStyle{#1}
+	\umlGetAssoziationDifferences{#2}{#3}
+	%	
+	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
+		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {#4} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {#5};
+	}{
+		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {#4} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {#5};
+	}
+}
 
 \newcommand{\umlSelf}[4][]{\umlInitArrowStyle{#1}
 	\draw[\umlArrowStyle] (#2.east) -- ++ (0.5, 0) node [near start, above] (TextNode) {#3} -- ++ (0,-\csname umlBoxHeight#2\endcsname/2 - 0.5cm) -- ++ (- \csname umlBoxWidth#2\endcsname/2 - 0.5cm, 0) -- (#2.south) node [near end, right] (TextNode) {#4};}
