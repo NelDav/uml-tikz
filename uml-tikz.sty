@@ -47,19 +47,24 @@
 \setlength{\umlMultiplicityDistance}{0.3cm}
 \newcommand{\umlArrowStyle}{}
 
+\newcounter{umlenvironmentcounter}
+
+%--The envrionment for classes
+\newenvironment{umlpicture}{\stepcounter{umlenvironmentcounter} \begin{tikzpicture}}{\end{tikzpicture}}
+
 %--The command to create a new class
 \newcommand{\umlClass}[3]{
 %	
 	\edef\temp{%
-		\noexpand\newlength{\csname umlPositionX#1\endcsname}
-		\noexpand\setlength{\csname umlPositionX#1\endcsname}{\umlPositionX}
-		\noexpand\newlength{\csname umlPositionY#1\endcsname}
-		\noexpand\setlength{\csname umlPositionY#1\endcsname}{\umlPositionY}
+		\noexpand\newlength{\csname umlPositionX#1\arabic{umlenvironmentcounter}\endcsname}
+		\noexpand\setlength{\csname umlPositionX#1\arabic{umlenvironmentcounter}\endcsname}{\umlPositionX}
+		\noexpand\newlength{\csname umlPositionY#1\arabic{umlenvironmentcounter}\endcsname}
+		\noexpand\setlength{\csname umlPositionY#1\arabic{umlenvironmentcounter}\endcsname}{\umlPositionY}
 	}
 	
 	\temp
 %	
-	\node (#1) at (\csname umlPositionX#1\endcsname,\csname umlPositionY#1\endcsname) {
+	\node (#1\arabic{umlenvironmentcounter}) at (\csname umlPositionX#1\arabic{umlenvironmentcounter}\endcsname,\csname umlPositionY#1\arabic{umlenvironmentcounter}\endcsname) {
 		\begin{class}{#1}
 			#2
 			\tcblower
@@ -67,8 +72,8 @@
 		\end{class}
 };
 	\edef\tmp{%
-		\noexpand\tcbsetmacrotoheightofnode{\csname umlBoxHeight#1\endcsname}{#1}
-		\noexpand\tcbsetmacrotowidthofnode{\csname umlBoxWidth#1\endcsname}{#1}
+		\noexpand\tcbsetmacrotoheightofnode{\csname umlBoxHeight#1\arabic{umlenvironmentcounter}\endcsname}{#1\arabic{umlenvironmentcounter}}
+		\noexpand\tcbsetmacrotowidthofnode{\csname umlBoxWidth#1\arabic{umlenvironmentcounter}\endcsname}{#1\arabic{umlenvironmentcounter}}
 	}
 
 	\tmp	
@@ -77,36 +82,36 @@
 %--Commands for positioning of the classes
 
 \newcommand{\umlRightOf}[2][1]{
-	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname + \csname umlBoxWidth#2\endcsname*#1 + \umlHSpacing*#1}
-	\setlength{\umlPositionY}{\csname umlPositionY#2\endcsname}}
+	\setlength{\umlPositionX}{\csname umlPositionX#2\arabic{umlenvironmentcounter}\endcsname + \csname umlBoxWidth#2\arabic{umlenvironmentcounter}\endcsname*#1 + \umlHSpacing*#1}
+	\setlength{\umlPositionY}{\csname umlPositionY#2\arabic{umlenvironmentcounter}\endcsname}}
 %
 \newcommand{\umlLeftOf}[2][1]{
-	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname - \csname umlBoxWidth#2\endcsname*#1 - \umlHSpacing*#1}
-	\setlength{\umlPositionY}{\csname umlPositionY#2\endcsname}}
+	\setlength{\umlPositionX}{\csname umlPositionX#2\arabic{umlenvironmentcounter}\endcsname - \csname umlBoxWidth#2\arabic{umlenvironmentcounter}\endcsname*#1 - \umlHSpacing*#1}
+	\setlength{\umlPositionY}{\csname umlPositionY#2\arabic{umlenvironmentcounter}\endcsname}}
 %
 \newcommand{\umlDownOf}[2][1]{
-	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname}
-	\setlength{\umlPositionY}{\csname umlPositionY#2\endcsname - \csname umlBoxHeight#2\endcsname*#1/2 - \umlVSpacing*#1}}
+	\setlength{\umlPositionX}{\csname umlPositionX#2\arabic{umlenvironmentcounter}\endcsname}
+	\setlength{\umlPositionY}{\csname umlPositionY#2\arabic{umlenvironmentcounter}\endcsname - \csname umlBoxHeight#2\arabic{umlenvironmentcounter}\endcsname*#1/2 - \umlVSpacing*#1}}
 %
 \newcommand{\umlUpOf}[2][1]{
-	\setlength{\umlPositionX}{\csname umlPositionX#2\endcsname}
-	\setlength{\umlPositionY}{\csname umlPositionY#2\endcsname + \csname umlBoxHeight#2\endcsname*#1/2 + \umlVSpacing*#1}}
+	\setlength{\umlPositionX}{\csname umlPositionX#2\arabic{umlenvironmentcounter}\endcsname}
+	\setlength{\umlPositionY}{\csname umlPositionY#2\arabic{umlenvironmentcounter}\endcsname + \csname umlBoxHeight#2\arabic{umlenvironmentcounter}\endcsname*#1/2 + \umlVSpacing*#1}}
 
 \NewDocumentCommand{\umlRightDownOf}{ O{1} O{1} m }{
-	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname + \csname umlBoxWidth#3\endcsname*#1 + \umlHSpacing*#1}
-	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname - \csname umlBoxHeight#3\endcsname*#2/2 - \umlVSpacing*#2}}
+	\setlength{\umlPositionX}{\csname umlPositionX#3\arabic{umlenvironmentcounter}\endcsname + \csname umlBoxWidth#3\arabic{umlenvironmentcounter}\endcsname*#1 + \umlHSpacing*#1}
+	\setlength{\umlPositionY}{\csname umlPositionY#3\arabic{umlenvironmentcounter}\endcsname - \csname umlBoxHeight#3\arabic{umlenvironmentcounter}\endcsname*#2/2 - \umlVSpacing*#2}}
 
 \NewDocumentCommand{\umlRightUpOf}{ O{1} O{1} m }{
-	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname + \csname umlBoxWidth#3\endcsname*#1 + \umlHSpacing*#1}
-	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname + \csname umlBoxHeight#3\endcsname*#2/2 + \umlVSpacing*#2}}
+	\setlength{\umlPositionX}{\csname umlPositionX#3\arabic{umlenvironmentcounter}\endcsname + \csname umlBoxWidth#3\arabic{umlenvironmentcounter}\endcsname*#1 + \umlHSpacing*#1}
+	\setlength{\umlPositionY}{\csname umlPositionY#3\arabic{umlenvironmentcounter}\endcsname + \csname umlBoxHeight#3\arabic{umlenvironmentcounter}\endcsname*#2/2 + \umlVSpacing*#2}}
 
 \NewDocumentCommand{\umlLeftDownOf}{ O{1} O{1} m }{
-	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname - \csname umlBoxWidth#3\endcsname*#1 - \umlHSpacing*#1}
-	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname - \csname umlBoxHeight#3\endcsname*#2/2 - \umlVSpacing*#2}}
+	\setlength{\umlPositionX}{\csname umlPositionX#3\arabic{umlenvironmentcounter}\endcsname - \csname umlBoxWidth#3\arabic{umlenvironmentcounter}\endcsname*#1 - \umlHSpacing*#1}
+	\setlength{\umlPositionY}{\csname umlPositionY#3\arabic{umlenvironmentcounter}\endcsname - \csname umlBoxHeight#3\arabic{umlenvironmentcounter}\endcsname*#2/2 - \umlVSpacing*#2}}
 
 \NewDocumentCommand{\umlLeftUpOf}{ O{1} O{1} m }{
-	\setlength{\umlPositionX}{\csname umlPositionX#3\endcsname - \csname umlBoxWidth#3\endcsname*#1 - \umlHSpacing*#1}
-	\setlength{\umlPositionY}{\csname umlPositionY#3\endcsname + \csname umlBoxHeight#3\endcsname*#2/2 + \umlVSpacing*#2}}
+	\setlength{\umlPositionX}{\csname umlPositionX#3\arabic{umlenvironmentcounter}\endcsname - \csname umlBoxWidth#3\arabic{umlenvironmentcounter}\endcsname*#1 - \umlHSpacing*#1}
+	\setlength{\umlPositionY}{\csname umlPositionY#3\arabic{umlenvironmentcounter}\endcsname + \csname umlBoxHeight#3\arabic{umlenvironmentcounter}\endcsname*#2/2 + \umlVSpacing*#2}}
 
 %--switch to seperate between different arrow styles
 
@@ -179,50 +184,50 @@
 
 \newcommand{\umlOneOne}[3][]{%
 	\umlInitArrowStyle{#1}
-	\umlGetAssoziationDifferences{#2}{#3}
+	\umlGetAssoziationDifferences{#2\arabic{umlenvironmentcounter}}{#3\arabic{umlenvironmentcounter}}
 %	
 	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
-		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {1} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {1};
+		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {1} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {1};
 	}{
-		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {1} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {1};
+		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {1} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {1};
 	}
 }
 
 \newcommand{\umlOneN}[3][]{%
 	\umlInitArrowStyle{#1}
-	\umlGetAssoziationDifferences{#2}{#3}
+	\umlGetAssoziationDifferences{#2\arabic{umlenvironmentcounter}}{#3\arabic{umlenvironmentcounter}}
 	%	
 	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
-		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {1} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {*};
+		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {1} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {*};
 	}{
-		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {1} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {*};
+		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {1} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {*};
 	}
 }
 
 \newcommand{\umlNN}[3][]{%
 	\umlInitArrowStyle{#1}
-	\umlGetAssoziationDifferences{#2}{#3}
+	\umlGetAssoziationDifferences{#2\arabic{umlenvironmentcounter}}{#3\arabic{umlenvironmentcounter}}
 	%	
 	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
-		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {*} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {*};
+		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {*} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {*};
 	}{
-		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {*} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {*};
+		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {*} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {*};
 	}
 }
 
-\newcommand{\umlFree}[5][]{\umlInitArrowStyle{#1}
+\newcommand{\umlFree}[5][]{%
 	\umlInitArrowStyle{#1}
-	\umlGetAssoziationDifferences{#2}{#3}
+	\umlGetAssoziationDifferences{#2\arabic{umlenvironmentcounter}}{#3\arabic{umlenvironmentcounter}}
 	%	
 	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
-		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {#4} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {#5};
+		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {#4} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {#5};
 	}{
-		\draw[\umlArrowStyle] (#2) -- (#3) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {#4} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {#5};
+		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {#4} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {#5};
 	}
 }
 
 \newcommand{\umlSelf}[4][]{\umlInitArrowStyle{#1}
-	\draw[\umlArrowStyle] (#2.east) -- ++ (0.5, 0) node [near start, above] (TextNode) {#3} -- ++ (0,-\csname umlBoxHeight#2\endcsname/2 - 0.5cm) -- ++ (- \csname umlBoxWidth#2\endcsname/2 - 0.5cm, 0) -- (#2.south) node [near end, right] (TextNode) {#4};}
+	\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}.east) -- ++ (0.5, 0) node [near start, above] (TextNode) {#3} -- ++ (0,-\csname umlBoxHeight#2\endcsname/2 - 0.5cm) -- ++ (- \csname umlBoxWidth#2\endcsname/2 - 0.5cm, 0) -- (#2.south) node [near end, right] (TextNode) {#4};}
 
 \newcommand{\umlNon}[3][]{\umlInitArrowStyle{#1}
-	\draw[\umlArrowStyle] (#2) -- (#3);}
+	\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter});}
