@@ -215,14 +215,14 @@
 	}
 }
 
-\newcommand{\umlFree}[5][]{%
+\NewDocumentCommand{\umlFree}{ O{} O{} O{} m m m m}{%
 	\umlInitArrowStyle{#1}
-	\umlGetAssoziationDifferences{#2\arabic{umlenvironmentcounter}}{#3\arabic{umlenvironmentcounter}}
+	\umlGetAssoziationDifferences{#4\arabic{umlenvironmentcounter}}{#5\arabic{umlenvironmentcounter}}
 	%	
 	\ifthenelse{\lengthtest{\umlAssoziationXDiff>\umlAssoziationYDiff}}{
-		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, below] (TextNode) [below=\the\umlMultiplicityDistance] {#4} node [very near end, below] (TextNode) [below=\the\umlMultiplicityDistance] {#5};
+		\draw[\umlArrowStyle] (#4\arabic{umlenvironmentcounter}) -- (#5\arabic{umlenvironmentcounter}) node [very near start, below] (TextNode) [below=\the\umlMultiplicityDistance] {#6} node [very near start, above] (TextNode) [above=\the\umlMultiplicityDistance] {#2} node [very near end, below] (TextNode) [below=\the\umlMultiplicityDistance] {#7} node [very near end, above] (TextNode) [above=\the\umlMultiplicityDistance] {#3};
 	}{
-		\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter}) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {#4} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {#5};
+		\draw[\umlArrowStyle] (#4\arabic{umlenvironmentcounter}) -- (#5\arabic{umlenvironmentcounter}) node [very near start, right] (TextNode) [right=\the\umlMultiplicityDistance] {#6} node [very near start, left] (TextNode) [left=\the\umlMultiplicityDistance] {#2} node [very near end, right] (TextNode) [right=\the\umlMultiplicityDistance] {#7} node [very near end, left] (TextNode) [left=\the\umlMultiplicityDistance] {#3};
 	}
 }
 
