@@ -227,7 +227,7 @@
 }
 
 \newcommand{\umlSelf}[4][]{\umlInitArrowStyle{#1}
-	\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}.east) -- ++ (0.5, 0) node [near start, above] (TextNode) {#3} -- ++ (0,-\csname umlBoxHeight#2\endcsname/2 - 0.5cm) -- ++ (- \csname umlBoxWidth#2\endcsname/2 - 0.5cm, 0) -- (#2.south) node [near end, right] (TextNode) {#4};}
+	\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}.east) -- ++ (0.5, 0) node [near start, above] (TextNode) {#3} -- ++ (0,-\csname umlBoxHeight#2\arabic{umlenvironmentcounter}\endcsname/2 - 0.5cm) -- ++ (- \csname umlBoxWidth#2\arabic{umlenvironmentcounter}\endcsname/2 - 0.5cm, 0) -- (#2\arabic{umlenvironmentcounter}.south) node [near end, right] (TextNode) {#4};}
 
 \newcommand{\umlNon}[3][]{\umlInitArrowStyle{#1}
 	\draw[\umlArrowStyle] (#2\arabic{umlenvironmentcounter}) -- (#3\arabic{umlenvironmentcounter});}
