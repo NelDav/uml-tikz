@@ -312,9 +312,24 @@
 		
 		\begin{tikzpicture}[baseline=15]
 			\umlNon[x->]{0,0}{5,0}
-		\end{tikzpicture}\\
+		\end{tikzpicture}
 	\end{tabular}
 	
 	It is possible to invert the arrow direction by inverting ending style argument.
 	
+	It is possible to add User specific text at the end and the start of an association. This text is printed at the opposite of the multiplicity.
+	
+	The userspecific text has to be stated as optional arguments behind the optional argument, that defines the \texttt{endingStyle}. The text in the first bracked is printed at the start, the text in the seccond bracked is printed at the end.
+	
+	\begin{tabular}{p{.44\textwidth}|p{.44\textwidth}}
+		\begin{lstlisting}[language=TeX]
+\umlOneOne[->][One][Two]{NameOfClass1}{NameOfClass2}
+		\end{lstlisting}
+		
+		&
+		
+		\begin{tikzpicture}[baseline=52]
+		\umlOneOne[->][One][Two]{0,0}{5,0}
+		\end{tikzpicture}
+	\end{tabular}
 \end{document}
