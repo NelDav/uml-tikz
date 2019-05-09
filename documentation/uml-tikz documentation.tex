@@ -89,6 +89,19 @@
 	\section{Include the package}
 		To include the package you only have to type \command{\textbackslash usepackage\{uml-tikz\}}
 %		
+	\section{Environment}
+		To create a uml diagramm, the \texttt{umlpicture} environment is needed. Every command of the uml-tikz package schould be used in this environment. The environment is used like that:
+		
+		\begin{lstlisting}
+\begin{umlpicture}
+   commands
+\end{umlpicture}
+		\end{lstlisting}
+		
+		\begin{attention}
+			If the \texttt{tikzpicture} environment is used instead of the \texttt{umlpicture} envrionment. It is not possible to use classes with equal name in different environments.
+		\end{attention}
+
 	\section{Classes}
 	
 	\subsection{Create a class}
@@ -230,10 +243,10 @@
 		
 		&
 		
-		\begin{tikzpicture}[baseline=20]
+		\begin{umlpicture}[baseline=20]
 		\umlClass{class}{attribute}{functions}
 		\umlSelf{class}{1}{*}
-		\end{tikzpicture}
+		\end{umlpicture}
 	\end{tabular}
 	
 	It is possible to create different endings for every assoziation. Therefore the ending style has be defined as optional argument. 
